@@ -13,7 +13,7 @@ foreach ($sections as $vol) {
 					if ($key) {
 						$item_id     = preg_replace("/\/item\/([0-9]+)/", "$1", $item['lINK']);
 						$tovar_array = entero::GetItem($item['lINK']);
-						?>
+						?>gbvmnj       
 						<pre><?print_r($tovar_array)?></pre>
 						<?
 						file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/import/tovars/{$razdel_id}_{$item_id}.php", serialize($tovar_array));
