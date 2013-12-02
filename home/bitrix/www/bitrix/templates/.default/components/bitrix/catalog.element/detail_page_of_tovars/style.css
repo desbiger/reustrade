@@ -1,0 +1,18 @@
+.catalog-price {
+	 color:red;
+    font-size: 25px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+.properties{
+    width: 100%;
+    border-collapse: collapse;
+}
+.properties tr td{
+    text-align: left;
+    padding: 5px;
+
+}
+.properties tr:nth-child(odd) td{
+    background-color: #dddbdd;
+}
