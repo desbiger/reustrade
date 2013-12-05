@@ -25,8 +25,10 @@
 
 		static function GetHTMLForm($description, $values, $name,$types)
 		{
-			if (($config = $types[$description]['TYPE']) != '') {
-				return forms::$config($values, $name, $description);
+			if (($config = $types[$description]['TYPE']) != '' ) {
+				if(method_exists('forms',$config)){
+					return forms::$config($values, $name, $description,$types[$description]['ED_IZM']);
+				}
 			}
 			else {
 				return null;

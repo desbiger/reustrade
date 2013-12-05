@@ -32,10 +32,12 @@ GROUP BY prop.`DESCRIPTION`
 	}
 
 
+	$i = 0;
 	foreach ($arResult['ITEMS'] as $de) {
+		$i++;
 		$description         = $de['DESCRIPTION'];
 		$values              = $arResult['VALUES'][$description];
-		$arResult['FORMS'][] = filter::GetHTMLForm($description, $values, 'XML_PROP[]',$types);
+		$arResult['FORMS'][] = filter::GetHTMLForm($description, $values, "XML_PROP_{$i}",$types);
 	}
 
 
