@@ -1,0 +1,21 @@
+.filter{
+    background-color: #ddf3ff;
+    width: 150px;
+    padding: 10px;
+    float: right;
+}
+.filter .node{
+    float: left;
+    min-width: 70px;
+    text-align: left;
+}
+.filter .item{
+    clear: both;
+}
+.filter h3{
+    font-size: 12px;
+    text-decoration: underline;
+}
+.filter select{
+    width: 130px;
+}
