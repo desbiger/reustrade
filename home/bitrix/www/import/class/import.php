@@ -52,35 +52,81 @@
 		static function TovarAdd($array, $file_name)
 		{
 			self::inc();
-			$razdel_xml_id = preg_replace("/([0-9]+)_([0-9]+)\.php/", "$1", $file_name);
-			$tovar_xml_id  = preg_replace("/([0-9]+)_([0-9]+)\.php/", "$2", $file_name);
-			$el            = new CIBlockElement();
-			$SECTION_ID    = self::SectionID_ByXML_ID($razdel_xml_id);
+			if (!CIBlockElement::GetList(null, array(
+				'XML_ID' => $array['ID'],
+				'IBLOCK_ID' => 14
+			))
+					->Fetch()
+			) {
+				$razdel_xml_id = preg_replace("/([0-9]+)_([0-9]+)\.php/", "$1", $file_name);
+				$tovar_xml_id  = preg_replace("/([0-9]+)_([0-9]+)\.php/", "$2", $file_name);
+				$el            = new CIBlockElement();
+				$SECTION_ID    = self::SectionID_ByXML_ID($razdel_xml_id);
+				foreach ($array['PROPERTIES']['VALUES'] as $key => $vol) {
+					$PROP['XML_PROP'][] = array(
+						'VALUE' => $vol,
+						'DESCRIPTION' => $array['PROPERTIES']['DESCRIPTIONS'][$key]
+					);
+				}
+				$PROP['PRICE'] = $array['PRICE'];
+				$img_name      = $razdel_xml_id . "_" . $tovar_xml_id;
+
+				$photo           = $array['PHOTO']['BASE_IMG'] ? "http://www.entero.ru" . $array['PHOTO']['BASE_IMG'] : $array['PHOTOS'] != 'http://www.entero.ru/photos/xxxl/' ? $array['PHOTOS'] : "";
+				$picture         = CFile::MakeFileArray($photo);
+				$picture['name'] = $picture['name'] . ".jpg";
+				$fields          = array(
+					'XML_ID' => $tovar_xml_id,
+					'IBLOCK_ID' => 14,
+					'NAME' => $array['NAME'],
+					'PROPERTY_VALUES' => $PROP,
+					'IBLOCK_SECTION_ID' => $SECTION_ID,
+
+				);
+				if ($picture) {
+					$fields['DETAIL_PICTURE'] = $picture;
+				}
+				if ($id = $el->Add($fields)) {
+					return $id;
+				}
+				else {
+					return $el->LAST_ERRORS;
+				}
+			}
+
+		}
+
+		static function TovarUpdate($array, $id)
+		{
+			self::inc();
+
+			$el = new CIBlockElement();
 			foreach ($array['PROPERTIES']['VALUES'] as $key => $vol) {
 				$PROP['XML_PROP'][] = array(
 					'VALUE' => $vol,
 					'DESCRIPTION' => $array['PROPERTIES']['DESCRIPTIONS'][$key]
 				);
 			}
-			$PROP['PRICE'] = $array['PRICE'];
-			$img_name      = $razdel_xml_id . "_" . $tovar_xml_id;
-
-			$photo = $array['PHOTO']['BASE_IMG'] ? "http://www.entero.ru" . $array['PHOTO']['BASE_IMG'] : $array['PHOTOS'] != 'http://www.entero.ru/photos/xxxl/' ? $array['PHOTOS'] : "";
-			$picture = CFile::MakeFileArray($photo);
-			$picture['name'] = $picture['name'].".jpg";
-			$fields = array(
-				'XML_ID' => $tovar_xml_id,
-				'IBLOCK_ID' => 14,
+			$PROP['PRICE']   = $array['PRICE'];
+			$photo           = $array['PHOTO']['BASE_IMG'] ? "http://www.entero.ru" . $array['PHOTO']['BASE_IMG'] : $array['PHOTOS'] != 'http://www.entero.ru/photos/xxxl/' ? $array['PHOTOS'] : "";
+			$picture         = CFile::MakeFileArray($photo);
+			$picture['name'] = $picture['name'] . ".jpg";
+			$fields          = array(
 				'NAME' => $array['NAME'],
 				'PROPERTY_VALUES' => $PROP,
-				'IBLOCK_SECTION_ID' => $SECTION_ID,
-				'DETAIL_PICTURE' => $picture
+				//				'IBLOCK_SECTION_ID' => $SECTION_ID,
 			);
-			if ($id = $el->Add($fields)) {
-				return $id;
+			if ($picture) {
+				$fields['DETAIL_PICTURE'] = $picture;
+			}
+			?>
+<!--			<pre>--><?//print_r($fields)?><!--</pre>-->
+			<?
+			if ($res_id = $el->Update($id, $fields)) {
+				echo $id . " - " . (bool)$res_id . "<br>";
 			}
 			else {
-				return $el->LAST_ERRORS;
+				echo  $el->LAST_ERROR;
 			}
+
 		}
 	}

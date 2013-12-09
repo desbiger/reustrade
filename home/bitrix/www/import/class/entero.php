@@ -4,12 +4,15 @@
 
 	class entero
 	{
-		static function ListSections(){
-			$folder = scandir($_SERVER['DOCUMENT_ROOT']."/import/items/");
+		static function ListSections()
+		{
+			$folder = scandir($_SERVER['DOCUMENT_ROOT'] . "/import/items/");
 			return $folder;
 		}
-		static function ListTovars(){
-			$folder = scandir($_SERVER['DOCUMENT_ROOT']."/import/tovars/");
+
+		static function ListTovars()
+		{
+			$folder = scandir($_SERVER['DOCUMENT_ROOT'] . "/import/tovars/");
 			return $folder;
 		}
 
@@ -25,7 +28,7 @@
 
 
 			foreach ($htmldom->find('table.ch td.name') as $names) {
-				$description = explode("<span>",$names->innertext);
+				$description            = explode("<span>", $names->innertext);
 				$prop['DESCRIPTIONS'][] = $description[1];
 			}
 			foreach ($htmldom->find('table.ch tr td.value') as $values) {
@@ -55,8 +58,50 @@
 				'PROPERTIES' => $prop,
 			);
 
-//			unset($htmldom);
+			//			unset($htmldom);
 			return $result;
+		}
+
+
+		static function GetItemReg($id)
+		{
+			echo $url = "http://www.entero.ru{$id}";
+			$id   = preg_replace("|/item/([0-9]+)|is", "$1", $id);
+			$page = str_replace(array(
+				"\r",
+				"\n",
+				"&nbsp;"
+			), array(
+				"",
+				"",
+				" "
+			), file_get_contents($url));
+
+			preg_match_all("/<div[^>]+zoomable[^>]+id=([0-9]+)[^>]*>/isu", $page, $photos);
+			preg_match_all("|<td[^>]+value[^>]*>([^>]+)<\/td>|isu", $page, $values);
+			preg_match_all("|<[^>]+><span>([^>]+)<span><\/[^>]+>|isu", $page, $names);
+			preg_match_all("|<h1[^>]+navi[^>]*>([^>]+)<\/h1>|isu", $page, $title);
+			preg_match_all("|<img[^>]+(\/photos\/l\/[0-9]+)[^>]*>|isu", $page, $photo2);
+			preg_match_all("|<span>([^>]+)<\/span>|isu", $page, $price);
+			preg_match_all("|>Торговая марка ([^>]+)<|isu", $page, $brend);
+			$page                        = '';
+			$properties                  = array(
+				'DESCRIPTIONS' => $names[1],
+				'VALUES' => $values[1],
+			);
+			$properties['DESCRIPTIONS'][] = 'Бренд';
+			$properties['VALUES'][]      = $brend[1][0];
+			return array(
+				'ID' => $id,
+				'NAME' => $title[1][0],
+				'PRICE' => $price[1][0],
+				'BREND' => $brend[1][0],
+				'PROPERTIES' => $properties,
+				'PHOTO' => array(
+					'BASE_IMG' => $photo2[1][0],
+				),
+				'PHOTOS' => "http://www.entero.ru/photos/xxxl/" . $photos[1][0]
+			);
 		}
 
 		/**
@@ -97,7 +142,57 @@
 				}
 			}
 			if (count($result) > 0) {
-//				file_put_contents(ROOT . "/import/items/{$section_id}.php", serialize($result));
+				//				file_put_contents(ROOT . "/import/items/{$section_id}.php", serialize($result));
+			}
+			//			unset($htmldom);
+			return $result;
+
+		}
+
+		static function GetItemsFromOnePage($url)
+		{
+			$res  = '';
+			$html = file_get_contents("http://www.entero.ru" . $url);
+			preg_match_all("|<a[^>]+(\/item\/[0-9]+)[^>]+title=\"Подробное описание\">|ius", $html, $res);
+			foreach ($res[1] as $v) {
+				$result[] = array(
+					'lINK' => $v
+				);
+			}
+			return $result;
+		}
+
+		static function add_to_array($array1, $array2)
+		{
+			foreach ($array2 as $vol) {
+				$array1[] = $vol;
+			}
+			return $array1;
+
+		}
+
+		static function GetItemsReg($section_id)
+		{
+			$result  = array();
+			$url     = "http://www.entero.ru/list/{$section_id}";
+			$htmldom = str_replace(array(
+				"\n",
+				"&nbsp;",
+				"\r"
+			), array(
+				'',
+				' ',
+				''
+			), file_get_contents($url));
+
+			preg_match_all("|<a[^>]+(\/list\/[0-9]+\?p\=[0-9]+)>|", $htmldom, $pages);
+			$links  = self::GetItemsFromOnePage('/list/' . $section_id);
+			$result = $links;
+			if (count($pages[1]) > 0) {
+				foreach ($pages[1] as $next_url) {
+					$links  = self::GetItemsFromOnePage($next_url);
+					$result = array_merge($result, $links);
+				}
 			}
 			return $result;
 		}

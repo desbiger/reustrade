@@ -8,7 +8,7 @@
 				$values_enum[] = (int)$vol;
 			}
 			asort($values_enum);
-			foreach($values_enum as $vol){
+			foreach ($values_enum as $vol) {
 				$result[] = $vol;
 			}
 			return $result;
@@ -18,9 +18,11 @@
 		{
 
 			$str = "<h3><span>{$title}</span></h3>";
-			$str .= "<select name='{$name}'>";
+			$str .= "<select name='{$name}'>
+			   <option value=''>Все</option>
+			";
 			foreach ($values as $item) {
-				$selected = $_REQUEST[$name] == $title ? "selected='selected'" : '';
+				$selected = $_REQUEST[$name] == $item ? "selected='selected'" : '';
 				$str .= "<option {$selected} value='{$item}'>{$item}</option>";
 			}
 
@@ -37,18 +39,18 @@
 			<h3><span>" . $title . "</span></h3>
 			<script type='text/javascript'>
 			$(function(){
-			jQuery('#slider_" . $name . "').slider({
+			$('#slider_{$name}').slider({
 			    min: " . $min . ",
 			    max: " . $max . ",
 			    values: [" . $min . "," . $max . "],
 			    range: true,
-			    stop: function(event, ui) {
-			            jQuery('input#minCost_" . $name . "').val(jQuery('#slider_" . $name . "').slider('values',0));
-			            jQuery('input#maxCost_" . $name . "').val(jQuery('#slider_" . $name . "').slider('values',1));
-			        },
+
 			        slide: function(event, ui){
-			            jQuery('input#minCost_" . $name . "').val(jQuery('#slider_" . $name . "').slider('values',0));
-			            jQuery('input#maxCost_" . $name . "').val(jQuery('#slider_" . $name . "').slider('values',1));
+			            $('input#minCost_{$name}').val($('#slider_{$name}').slider('values',0));
+			            $('input#maxCost_{$name}').val($('#slider_{$name}').slider('values',1));
+			            if (ui.values[0]=={$min}) $('input#minCost_{$name}').val('');
+			            if (ui.values[1]=={$max}) $('input#maxCost_{$name}').val('');
+
 			        }
 			});
 			});
@@ -59,11 +61,11 @@
 			$str .= "
 			<div class='formCost'>
 			
-			от<input type='text' id='minCost_" . $name . "' value='" . $min . "'/>
-			до<input type='text' id='maxCost_" . $name . "' value='" . $max . "'/>" .$ed_izm."
+			от<input name='min_{$name}' type='text' id='minCost_{$name}' value='".$_REQUEST['min_'.$name]."'/>
+			до<input name='max_{$name}' type='text' id='maxCost_{$name}' value='".$_REQUEST['max_'.$name]."'/>" . $ed_izm . "
 			</div>
 			<div class='sliderCont'>
-			<div id='slider_" . $name . "'></div>
+			<div id='slider_{$name}'></div>
 			</div>
 			";
 			return $str;
@@ -75,7 +77,7 @@
 		{
 			$str = "<h3><span>" . $title . "</span></h3>";
 			foreach ($values as $items) {
-				$sel = $_REQUEST[$name] == $items ? "checked = 'checked'" : '';
+				$sel = in_array($items, $_REQUEST[$name]) ? "checked = 'checked'" : '';
 				$str .= "<div class='node'>
 				<input {$sel} name = '{$name}[]' type='checkbox' value='{$items}'>{$items}</div>";
 
