@@ -47,11 +47,11 @@ input {
 .topmenu{
 	height:32px;
 	background:#f9f9f9;
-	margin-left:66px;
+	margin-left:36px;
 	padding-left:10px;
 	border:1px solid #ebebeb;
 	border-top:none !important;
-	margin-right:66px;
+	margin-right:36px;
 }
 .topmenu ul li{
 	display:inline;
@@ -82,7 +82,7 @@ input {
 .sub_top{
 	height:99px;
 	margin-top:5px;
-	margin-left:66px;
+	margin-left:26px;
 }
 .logo{
 	background:url(../img/logo.png) no-repeat;
@@ -96,9 +96,10 @@ input {
 	cursor:pointer;
 }
 .sub_input{
-	margin-left:250px;
-	margin-right:66px;
-	margin-top:8px;
+    margin-left: 276px;
+    margin-right: 36px;
+    margin-top: 14px;
+    height: 80px;
 }
 .s_input{
 	background:#5dc2e6;
@@ -126,13 +127,14 @@ input {
 	color:#fefefe;
 	font-weight:bold;
 }
-.cont{
-	font:15px Arial, Helvetica, sans-serif;
-	text-transform:uppercase;
-	font-weight:bold;
-	color:#414141;
-	margin-bottom:5px;
-	margin-left:5px;
+.cont , .cont a{
+    font: 15px Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #414141;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    float: left;
 }
 .ph{
 	margin-right:11px;
@@ -292,7 +294,7 @@ input {
     position: relative;
 }
 .cat_tit{
-    clear: both;
+    /*clear: both;*/
 	margin-bottom:14px;
 	text-align:left;
 	margin-left:10px;
@@ -403,6 +405,9 @@ input {
 	color:#575656;
 	padding-left:16px;
 	padding-top:10px;
+    padding-bottom: 10px;
+    float:left;
+
 }
 ._news a, ._news2 a{
 	font:12px Arial, Helvetica, sans-serif;
@@ -590,4 +595,13 @@ input {
 }
 .search-page a{
     color: #414141;
+}
+.search-form{
+    overflow: hidden;
+    width: 860px;
+    float: right;
+}
+.clear{
+    clear:both;
+    margin-top: 10px;
 }

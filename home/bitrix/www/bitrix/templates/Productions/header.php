@@ -5,7 +5,7 @@
 	<title><?$APPLICATION->ShowTitle()?></title>
 	<?$APPLICATION->ShowHead()?>
 
-
+	<meta name='yandex-verification' content='54208477191fd269' />
 	<meta name = "google-site-verification" content = "XICJliXymiJllQLel1VJ72c1SwLLimIV16GpD2RI-vg"/>
 
 	<link rel = "stylesheet" type = "text/css" href = "/bitrix/templates/Productions/css/style.css"/>
@@ -15,13 +15,10 @@
 
 	<script type = "text/javascript" src = "/bitrix/templates/Productions/js/menu.js"></script>
 	<script type = "text/javascript" src = "/bitrix/templates/Productions/js/jquery-1.4.3.min.js"></script>
-<!--	<script type = "text/javascript" src = "http://www.xiper.net/examples/js-plugins/ui/ui-slider/js/jquery-1.6.1.min.js"></script>-->
-<!--	<script type="text/javascript" src="http://www.xiper.net/examples/js-plugins/ui/ui-slider/js/jquery.ui-slider.js"></script>-->
 	<script type="text/javascript" src="/include/jquery.ui-slider.js"></script>
 
 	<script type = "text/javascript" src = "/bitrix/templates/Productions/js/js.js"></script>
 	<script type = "text/javascript" src = "/bitrix/templates/Productions/js/jquery.jcarousel.min.js"></script>
-	<!--    <script type="text/javascript" src="/bitrix/templates/Productions/fancybox/jquery.fancybox-1.3.4.js"></script>-->
 	<script type = "text/javascript" src = "/bitrix/templates/Productions/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
 	<link rel = "stylesheet" href = "/bitrix/templates/Productions/css/cssf-base.css" type = "text/css" media = "screen"/>
@@ -132,32 +129,6 @@
 	<!-- #header-->
 
 	<div class = "post_header">
-
-		<!--        --><?//$APPLICATION->IncludeComponent("bitrix:catalog.section.list", "BIg_menu_razdels", array(
-		//	"IBLOCK_TYPE" => "products",
-		//	"IBLOCK_ID" => "2",
-		//	"SECTION_ID" => "",
-		//	"SECTION_CODE" => "",
-		//	"COUNT_ELEMENTS" => "Y",
-		//	"TOP_DEPTH" => "5",
-		//	"SECTION_FIELDS" => array(
-		//		0 => "",
-		//		1 => "",
-		//	),
-		//	"SECTION_USER_FIELDS" => array(
-		//		0 => "",
-		//		1 => "",
-		//	),
-		//	"SECTION_URL" => "",
-		//	"CACHE_TYPE" => "N",
-		//	"CACHE_TIME" => "36000000",
-		//	"CACHE_GROUPS" => "Y",
-		//	"ADD_SECTIONS_CHAIN" => "Y"
-		//	),
-		//	false
-		//);?>
-		<?/**/?>
-
 
 		<div class = "slider">
 			<div class = "folio_block">

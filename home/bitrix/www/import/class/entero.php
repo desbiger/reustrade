@@ -84,13 +84,21 @@
 			preg_match_all("|<img[^>]+(\/photos\/l\/[0-9]+)[^>]*>|isu", $page, $photo2);
 			preg_match_all("|<span>([^>]+)<\/span>|isu", $page, $price);
 			preg_match_all("|>Торговая марка ([^>]+)<|isu", $page, $brend);
-			$page                        = '';
-			$properties                  = array(
+			preg_match_all("|>Описание<\/div>.*<\/div|isU", $page, $opisanie);
+			preg_match_all("|<p>(.*)<\/p>|U", $opisanie[0][0], $opisanie_text);
+			if (count($opisanie_text[1]) > 0) {
+				$opisanie = '';
+				foreach ($opisanie_text[1] as $p) {
+					$opisanie .= $p != ' '? strip_tags($p) . "<br>": '';
+				}
+			}
+			$page                         = '';
+			$properties                   = array(
 				'DESCRIPTIONS' => $names[1],
 				'VALUES' => $values[1],
 			);
 			$properties['DESCRIPTIONS'][] = 'Бренд';
-			$properties['VALUES'][]      = $brend[1][0];
+			$properties['VALUES'][]       = $brend[1][0];
 			return array(
 				'ID' => $id,
 				'NAME' => $title[1][0],
@@ -100,7 +108,8 @@
 				'PHOTO' => array(
 					'BASE_IMG' => $photo2[1][0],
 				),
-				'PHOTOS' => "http://www.entero.ru/photos/xxxl/" . $photos[1][0]
+				'PHOTOS' => "http://www.entero.ru/photos/xxxl/" . $photos[1][0],
+				'OPISANIE' => $opisanie,
 			);
 		}
 

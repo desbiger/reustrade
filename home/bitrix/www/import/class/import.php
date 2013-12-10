@@ -118,8 +118,11 @@
 			if ($picture) {
 				$fields['DETAIL_PICTURE'] = $picture;
 			}
+			if ($array['OPISANIE']) {
+				$fields['DETAIL_TEXT'] = $array['OPISANIE'];
+			}
 			?>
-<!--			<pre>--><?//print_r($fields)?><!--</pre>-->
+			<!--			<pre>--><?//print_r($fields)?><!--</pre>-->
 			<?
 			if ($res_id = $el->Update($id, $fields)) {
 				echo $id . " - " . (bool)$res_id . "<br>";
